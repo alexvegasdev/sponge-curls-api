@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
@@ -19,8 +20,7 @@ class Product extends Model
         'stock',
         'image_url',
         'brand',
-        'category_id',
-        'curl_type_id',
+        'category_id'
     ];
 
     // Define the relationship with the Category model
@@ -30,9 +30,9 @@ class Product extends Model
     }
 
     // Define the relationship with the CurlType model
-    function curlType():BelongsTo
+    function curlTypes():BelongsToMany
     {
-        return $this->belongsTo(CurlType::class);
+        return $this->belongsToMany(CurlType::class);
     }
 
 }

@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('image_url')->nullable();
             $table->string('brand')->nullable();
             $table->foreignId('category_id')->constrained();
-            $table->foreignId('curl_type_id')->constrained();
             $table->timestamps();
         });
     }
