@@ -9,12 +9,24 @@ use App\Models\Product;
 class ProductService
 {
     
-    // public function getProductsByCurlType(string $curlType)
-    //     {
-    //         return Product::whereHas('curlTypes', function ($query) use ($curlType) {
-    //             $query->where('curl_types.name', $curlType);
-    //         })->get();
-    //     }
+    public function getProductsByCategoryAndCurlyType(?string $category=null, ?string $curlType=null)
+    {
+        $product = Product::with('category', 'curlTypes');
+
+        if ($category) {
+            $product->whereHas('category', function ($query) use ($category) {
+                $query->where('name', $category);
+            });
+        }
+
+        if($curlType){
+            $product->whereHas('curlTypes', function ($query) use ($curlType){
+                $query->where('name', $curlType);
+            });
+        }
+
+        return $product->get();
+    }
 
     public function createProductWithCurlTypes(array $data, array $curlTypeIds): Product
     {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SearchProductRequest;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
@@ -15,9 +16,12 @@ class ProductController extends Controller
     {
         $this->productService = $productService;
     }
-    function index()
+    function index(SearchProductRequest $request)
     {
-        $products = Product::with(['category', 'curlTypes'])->get();
+        $category = $request->input('category');
+        $curlType = $request->input('curl_type');
+
+        $products = $this->productService->getProductsByCategoryAndCurlyType($category, $curlType);
         return ProductResource::collection($products);
     }
 
@@ -44,4 +48,5 @@ class ProductController extends Controller
         $product->delete();
         return response()->json(["success"=>"Deleted product"],200);
     }
+
 }
